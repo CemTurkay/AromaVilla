@@ -1,10 +1,12 @@
 global using Infrastructure.Identity;
 global using ApplicationCore.Interfaces;
 global using ApplicationCore.Entities;
+global using Web.Models;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Web.Interfaces;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<AppIdentityDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //senden ne zaman IRepo isterse ona EFRepo ver// ---------------------------------// -----------// -----// ------// ÖNEMLÝ!
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+builder.Services.AddScoped<IHomeViewModelServices, HomeViewModelService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
