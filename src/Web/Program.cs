@@ -1,4 +1,6 @@
 global using Infrastructure.Identity;
+global using ApplicationCore.Interfaces;
+global using ApplicationCore.Entities;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<AppIdentityDbContext>(options =>
 
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+//senden ne zaman IRepo isterse ona EFRepo ver// ---------------------------------// -----------// -----// ------// ÖNEMLÝ!
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
@@ -38,6 +42,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRequestLocalization("en-US");
 
 app.UseRouting();
 
