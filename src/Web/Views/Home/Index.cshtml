@@ -55,7 +55,8 @@
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-            }else
+            }
+            else
             {
                 <li class="page-item disabled">
                     <a class="page-link" aria-label="Previous">
@@ -65,11 +66,22 @@
             }
 
 
-            @for (int i = 1; i <= pi.TotalPages; i++)
+            @foreach (var i in pi.Pagenumbers)
             {
-                <li class="page-item @(i == pi.PageId ? "active" : "")">
-                    <a class="page-link" asp-route-categorId="@Model.CategoryId" asp-route-brandId="@Model.BrandId" asp-route-pageId="@i">@i</a>
-                </li>
+                if (i > 0)
+                {
+                    <li class="page-item @(i == pi.PageId ? "active" : "")">
+                        <a class="page-link" asp-route-categorId="@Model.CategoryId" asp-route-brandId="@Model.BrandId" asp-route-pageId="@i">@i</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">
+                            <span aria-hidden="true">&hellip;</span>
+                        </a>
+                    </li>
+                }
             }
 
 
@@ -89,7 +101,7 @@
                     </a>
                 </li>
             }
-            
+
         </ul>
     </nav>
 </div>
