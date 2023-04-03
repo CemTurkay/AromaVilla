@@ -13,6 +13,8 @@ namespace ApplicationCore.Entities
         public decimal Price { get; set; }
         public string? PictureUri { get; set; }
         public int CategoryId { get; set; }
+        public int BrandId { get; set; }
+        
         public Category Category { get; set; } = null!;
         public Brand Brand { get; set; } = null!;
 
