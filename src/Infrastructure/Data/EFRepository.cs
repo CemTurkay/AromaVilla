@@ -18,14 +18,11 @@ namespace Infrastructure.Data
         {
             _db = db;
         }
-
-
         public async Task<T> AddAsync(T entity)
         {
             _db.Add(entity);
             await _db.SaveChangesAsync();
-            return entity;
-          
+            return entity;          
         }
 
         public Task<int> CountAsync(ISpecification<T> specification)
@@ -36,8 +33,7 @@ namespace Infrastructure.Data
         public async Task DeleteAsync(T entity)
         {
             _db.Remove(entity);
-            await _db.SaveChangesAsync();
-            
+            await _db.SaveChangesAsync();            
         }
 
         public Task<T> FirstAsync(ISpecification<T> specification)
