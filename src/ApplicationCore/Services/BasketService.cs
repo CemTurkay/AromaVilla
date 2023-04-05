@@ -76,14 +76,14 @@ namespace ApplicationCore.Services
             return basket;
         }
 
-        public async Task<Basket> SetQuantitites(string buyerId, Dictionary<int, int> quantities)
+        public async Task<Basket> SetQuantitites(string buyerId, Dictionary<int, int> quantites)
         {
             var basket = await GetorCreateBasketAsync(buyerId);
             foreach (var item in basket.Items)
             {
-                if (quantities.ContainsKey(item.Id))
+                if (quantites.ContainsKey(item.ProductId))
                 {
-                    item.Quantity = quantities[item.ProductId];
+                    item.Quantity = quantites[item.ProductId];
                     await _basketItemRepo.UpdateAsync(item);
                 }
             }
@@ -115,12 +115,12 @@ namespace ApplicationCore.Services
                 {
                     targetItem.Quantity += item.Quantity;
                 }
-
-                await _basketRepo.UpdateAsync(destinationBasket);
-                await _basketRepo.DeleteAsync(sourceBasket);
             }
 
-            
+            await _basketRepo.UpdateAsync(destinationBasket);
+            await _basketRepo.DeleteAsync(sourceBasket);
+
+
         }
     }
 }

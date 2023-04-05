@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Web.Interfaces;
 using Web.Services;
 using ApplicationCore.Services;
+using Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,8 @@ builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppIdentityDbContext>();
+
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 
@@ -58,6 +61,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+//app.UseMiddleware<TransferBasketMiddleware>();
+app.UseTransferBasket();
+// middleware extension kullandýk burda!
 
 app.MapControllerRoute(
     name: "default",

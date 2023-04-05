@@ -19,7 +19,7 @@ namespace Web.Services
             if (_createdAnonId == null)
             {
                 _createdAnonId = Guid.NewGuid().ToString();
-                HttpContext.Response.Cookies.Append(Constants.BASKET_COOKIENAME, _createdAnonId, new CookieOptions()
+                HttpContext?.Response.Cookies.Append(Constants.BASKET_COOKIENAME, _createdAnonId, new CookieOptions()
                 {
                     Expires = DateTime.Now.AddDays(14),
                     IsEssential = true
@@ -44,6 +44,29 @@ namespace Web.Services
         {
             var basket = await _basketService.GetorCreateBasketAsync(BuyerId);
             return basket.ToBasketViewModel();
+        }
+
+        public async Task EmptyBasketAsync()
+        {
+            await _basketService.EmpytBasketAsync(BuyerId);
+        }
+
+        public async Task DeleteBasketItemAsync(int productId)
+        {
+            await _basketService.DeleteBasketItemAsync(BuyerId, productId);
+        }
+
+        public async Task UpdateBasketAsync(Dictionary<int, int> quantites)
+        {
+           await _basketService.SetQuantitites(BuyerId, quantites);
+        }
+
+        public async Task TransferBasketAsync()
+        {
+            if (AnonId == null || UserId == null) return;
+            await _basketService.TransferBasketAsync(AnonId, UserId);
+            HttpContext?.Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
+            
         }
     }
 }
