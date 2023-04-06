@@ -7,6 +7,8 @@ namespace Web.Services
     {
         private readonly IBasketService _basketService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IOrderService _orderService;
+
         //-----------------------COOKIE-----------------------------------//
         private HttpContext? HttpContext => _httpContextAccessor.HttpContext;
         private string? UserId => HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -29,10 +31,11 @@ namespace Web.Services
             return _createdAnonId;
         }
         //---------------COOKIE------------------//
-        public BasketViewModelService(IBasketService basketService, IHttpContextAccessor httpContextAccessor)
+        public BasketViewModelService(IBasketService basketService, IHttpContextAccessor httpContextAccessor, IOrderService orderService)
         {
             _basketService = basketService;
             _httpContextAccessor = httpContextAccessor;
+            _orderService = orderService;
         }
         public async Task<BasketViewModel> AddItemToBasketAsync(int productId, int quantity)
         {
@@ -67,6 +70,13 @@ namespace Web.Services
             await _basketService.TransferBasketAsync(AnonId, UserId);
             HttpContext?.Response.Cookies.Delete(Constants.BASKET_COOKIENAME);
             
+        }
+
+        public async Task CheckoutAsync(string street, string city, string? state, string country, string zipCode)
+        {
+            var shippingAdress = new Adress(street, city, state, country, zipCode);
+            await _orderService.CreateOrderAsync(BuyerId, shippingAdress);
+            await _basketService.EmpytBasketAsync(BuyerId);
         }
     }
 }

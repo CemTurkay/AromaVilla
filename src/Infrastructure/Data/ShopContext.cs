@@ -13,6 +13,8 @@ namespace Infrastructure.Data
     {
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
+            //DÜnya saatine göre saati alıyor TimeZone alaklı
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public DbSet<Category> Categories => Set<Category>();
@@ -20,6 +22,8 @@ namespace Infrastructure.Data
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Basket> Baskets => Set<Basket>();
         public DbSet<BasketItem> BasketItems => Set<BasketItem>();
+        public DbSet<Order> Orders => Set<Order>();        
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
